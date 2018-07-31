@@ -6,7 +6,7 @@ use App\Models\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+class ReadThreads extends TestCase
 {
     /**
      * A basic test example.
