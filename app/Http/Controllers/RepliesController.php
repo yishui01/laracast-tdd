@@ -20,6 +20,7 @@ class RepliesController extends Controller
             'body' => request('body'),
             'user_id' => Auth::id(),
         ]);
+        return redirect()->route('threads.show', $thread->id)->with('success', '回复成功！');
     }
 
 }

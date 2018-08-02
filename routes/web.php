@@ -11,11 +11,15 @@
 |
 */
 
-Route::get('/','ThreadsController@index');
 
-Route::get('/threads', 'ThreadsController@index')->name('threads');
-Route::get('/threads/{thread}','ThreadsController@show')->name('threads.show');
-Route::post('/threads/{thread}/replies','RepliesController@store');
-Auth::routes();
+Auth::routes();//登录注册
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/','ThreadsController@index'); //首页
+
+Route::get('/threads', 'ThreadsController@index')->name('threads'); //话题列表
+
+Route::get('/threads/{thread}','ThreadsController@show')->name('threads.show');//话题详情
+
+Route::post('/threads/{thread}/replies','RepliesController@store')->name('replies.store'); //发表回复
+
+
