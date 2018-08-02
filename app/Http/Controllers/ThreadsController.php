@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThreadsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index','show']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +43,13 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Thread::create([
+            'user_id' => Auth::id(),
+            'title' =>$request->title,
+            'body' => $request->body
+        ]);
+
+        return redirect()->route('threads.store')->with('success', '话题发布成功');
     }
 
     /**
