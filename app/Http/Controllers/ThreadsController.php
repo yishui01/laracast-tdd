@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ThreadRequest;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class ThreadsController extends Controller
      */
     public function create()
     {
-        //
+        return view('threads.create');
     }
 
     /**
@@ -41,14 +42,12 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ThreadRequest $request)
     {
-        Thread::create([
-            'user_id' => Auth::id(),
-            'title' =>$request->title,
-            'body' => $request->body
-        ]);
-
+        $thread = new Thread();
+        $thread->fill($request->all());
+        $thread->user_id = Auth::id();
+        $thread->save();
         return redirect()->route('threads.store')->with('success', '话题发布成功');
     }
 

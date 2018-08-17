@@ -32,10 +32,10 @@ class ParticipateInForumTest extends TestCase
 
     public function testUnauthorizedUserCantPublishReply()
     {
-        //未登录用户无法发表评论
+        //未登录用户无法发表评论,并且会被重定向到登录页
         $thread = factory('App\Models\Thread')->create();
         $reply = factory('App\Models\Reply')->create();
-        $this->post('threads/'.$thread->id.'/replies',$reply->toArray());
-        $this->get('/threads/'.$thread->id)->assertDontSee($reply->body);
+        $this->withExceptionHandling()->post('threads/'.$thread->id.'/replies',$reply->toArray())
+            ->assertRedirect('/login');
     }
 }

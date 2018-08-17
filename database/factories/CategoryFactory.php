@@ -13,15 +13,11 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\Thread::class, function (Faker $faker) {
+$factory->define(App\Models\Category::class,function ($faker){
+    $name = $faker->word;
+
     return [
-        'user_id' => function () {
-            return factory('App\Models\User')->create()->id;
-        },
-        'category_id' => function () {
-            return factory('App\Models\Category')->create()->id;
-        },
-        'title' => $faker->sentence,
-        'body' => $faker->paragraph,
+        'name' => $name,
+        'slug' => $name,
     ];
 });

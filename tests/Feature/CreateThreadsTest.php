@@ -14,18 +14,19 @@ class CreateThreadsTest extends TestCase
     //已经登录的用户能够发表帖子,并且发布之后可以看到帖子
     public function testAuthorizedUserCanPublishThread()
     {
-        $this->actingAs(factory('App\Models\User')->create()); //已登录用户
+        $this->be(factory('App\Models\User')->create()); //已登录用户
         $thread = factory('App\Models\Thread')->make(); //生产一个帖子数据
         $this->post('/threads', $thread->toArray());
         $this->get('/threads')->assertSee($thread->title)->assertSee($thread->body);
     }
 
-    //游客不能发布帖子
-    public function testGuestCanNotPublishThread()
+    //游客发布帖子时会被重定向到登陆页面
+    public function testGuestsMayNotSeeTheCreateThreadPage()
     {
-        $thread = factory('App\Models\Thread')->make();
-        $this->post('/threads',$thread->toArray());
-        $this->get('/threads')->assertDontSee($thread->title)->assertDontSee($thread->body);
+        $this->withExceptionHandling() // 此处调用
+        ->get('/threads/create')
+            ->assertRedirect('/login');
     }
+
 
 }
