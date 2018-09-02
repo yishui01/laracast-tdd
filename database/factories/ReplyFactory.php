@@ -15,12 +15,8 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Reply::class, function (Faker $faker) {
     return [
-        'thread_id' => function () { //这个带动创建User
-            return factory('App\Models\Thread')->create()->id;
-        },
-        'user_id' => function () { //创建User
-            return factory('App\Models\User')->create()->id;
-        },
         'body' => $faker->paragraph,
+        'user_id' => factory(\App\Models\User::class)->create()->id,
+        'thread_id' => factory(\App\Models\Thread::class)->create()->id,
     ];
 });
