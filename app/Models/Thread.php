@@ -20,4 +20,15 @@ class Thread extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function addReply($reply)
+    {
+        $this->replies()->create($reply);
+    }
+
+    public function path()
+    {
+        return "/threads/{$this->category->slug}/{$this->id}";
+    }
+
 }

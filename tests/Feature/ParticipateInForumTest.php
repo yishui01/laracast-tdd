@@ -12,6 +12,7 @@ class ParticipateInForumTest extends TestCase
     use RefreshDatabase;
 
 
+    //已登录用户可以发表评论
     public function testAuthorizedUserCanPublishReply()
     {
         // Given we have a authenticated user
@@ -19,7 +20,7 @@ class ParticipateInForumTest extends TestCase
         // When the user adds a reply to the thread
         // Then their reply should be visible on the page
 
-        $this->be($user = factory('App\Models\User')->create());
+        $this->signIn();
 
         $thread = factory('App\Models\Thread')->create();
 
@@ -30,12 +31,21 @@ class ParticipateInForumTest extends TestCase
         $this->get('/threads/'.$thread->id)->assertSee($reply->body);
     }
 
+    //未登录用户发表评论会被重定向到login
     public function testUnauthorizedUserCantPublishReply()
     {
-        //未登录用户无法发表评论,并且会被重定向到登录页
-        $thread = factory('App\Models\Thread')->create();
-        $reply = factory('App\Models\Reply')->create();
-        $this->withExceptionHandling()->post('threads/'.$thread->id.'/replies',$reply->toArray())
+        $this->withExceptionHandling()
+            ->post('threads/1/replies',[])
             ->assertRedirect('/login');
+    }
+
+    //发表评论body:require验证规则
+    public function testReplyRequiresBody()
+    {
+        $thread = factory('App\Models\Thread')->create();
+        $reply = factory('App\Models\Reply')->make(['body'=>null]);
+        $this->signIn()->withExceptionHandling()
+            ->post('threads/'.$thread->id.'/replies',$reply->toArray())
+            ->assertSessionHasErrors('body');
     }
 }

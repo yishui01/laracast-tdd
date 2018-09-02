@@ -44,6 +44,11 @@ class ThreadsController extends Controller
      */
     public function store(ThreadRequest $request)
     {
+        $this->validate($request,[
+            'title' => 'required',
+            'body' => 'required',
+            'category_id' =>  'required|exists:categories,id'
+        ]);
         $thread = new Thread();
         $thread->fill($request->all());
         $thread->user_id = Auth::id();

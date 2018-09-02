@@ -16,9 +16,12 @@ class RepliesController extends Controller
 
     public function store(Thread $thread, Request $request)
     {
-        $thread->replies()->create([
+        $this->validate($request,[
+            'body' => 'required',
+        ]);
+        $thread->addReply([
             'body' => request('body'),
-            'user_id' => Auth::id(),
+            'user_id' => auth()->id(),
         ]);
         return redirect()->route('threads.show', $thread->id)->with('success', '回复成功！');
     }

@@ -35,6 +35,26 @@ class ThreadTest extends TestCase
         $this->assertInstanceOf('App\Models\Category', $this->thread->category);
     }
 
+    //为thread的store方法创建单元测试
+    public function testThreadCanAddReply()
+    {
+        $this->thread->addReply([
+            'body' => 'Foobar',
+            'user_id' => 1
+        ]);
+
+        $this->assertCount(1,$this->thread->replies);
+    }
+
+
+    //为thread模型的path方法添加测试，看生成的链接是否和预期一致
+    function testThreadCanMakeStringPath()
+    {
+        $thread = $this->thread;
+
+        $this->assertEquals("/threads/{$thread->category->slug}/{$thread->id}",$thread->path());
+    }
+
 
 
 }
