@@ -18,6 +18,8 @@ Route::get('/','ThreadsController@index'); //首页
 
 Route::resource('/threads', 'ThreadsController'); //话题
 
+Route::get('categories/{category}','CategoriesController@index'); //分类
+
 Route::post('/threads/{thread}/replies','RepliesController@store')->name('replies.store'); //发表回复
 
 

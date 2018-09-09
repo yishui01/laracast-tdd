@@ -51,7 +51,6 @@ class ThreadTest extends TestCase
     function testThreadCanMakeStringPath()
     {
         $thread = $this->thread;
-
         $this->assertEquals("/threads/{$thread->category->slug}/{$thread->id}",$thread->path());
     }
 

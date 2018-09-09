@@ -6,7 +6,7 @@ use App\Models\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ReadThreads extends TestCase
+class ReadThreadsTest extends TestCase
 {
     protected $thread;
 
@@ -46,6 +46,17 @@ class ReadThreads extends TestCase
          */
         $reply = factory('App\Models\Reply')->create(['thread_id'=>$this->thread->id]);
         $this->get('/threads/' . $this->thread->id)->assertSee($reply->body);
+    }
+
+    //用户可以根据分类过滤帖子
+    public function testUserCanFilterThreadsAccordingToACategory()
+    {
+        $category = factory('App\Models\Category')->create();
+        $threadInCategory = factory('App\Models\Thread')->create(['category_id'=>$category->id]);
+        $threadNotInCategory = factory('App\Models\Thread')->create();
+        $this->get('/categories/'.$category->id)
+            ->assertSee($threadInCategory->title)
+            ->assertDontSee($threadNotInCategory->title);
     }
 
 }
