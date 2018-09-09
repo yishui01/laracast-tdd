@@ -20,7 +20,7 @@
                                 <label for="channel_id">Choose a Channel</label>
                                 <select name="category_id" id="category_id" class="form-control" required>
                                     <option value="">请选择分类</option>
-                                    @foreach(App\Models\Category::all() as $category)
+                                    @foreach($channels  as $category)
                                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : ''}}>
                                             {{ $category->name }}
                                         </option>
